@@ -11,6 +11,7 @@ https://qa-scooter.praktikum-services.ru
 | `tests/test_create_order.py` | `TestCreateOrder` | `POST /api/v1/orders` |
 | `tests/test_orders_list.py` | `TestOrdersList` | `GET /api/v1/orders` |
 
+- `urls.py` — класс `Urls` с адресами
 - `data.py` — URL, тексты ошибок, тестовые данные заказа.
 - `helpers.py` — запросы к API и генерация данных.
 - `conftest.py` — фикстуры
