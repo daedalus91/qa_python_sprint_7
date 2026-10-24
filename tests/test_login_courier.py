@@ -1,8 +1,7 @@
 import allure
 import pytest
-import requests
 
-from data import REQUEST_TIMEOUT, Messages
+from data import Messages
 from helpers import generate_random_string, login_courier
 
 
@@ -32,18 +31,9 @@ class TestLoginCourier:
     def test_login_without_required_field(self, registered_courier, missing_field):
         payload = {"login": registered_courier["login"], "password": registered_courier["password"]}
         del payload[missing_field]
+        response = login_courier(payload)
 
-        try:
-            response = login_courier(payload)
-        except requests.exceptions.Timeout:
-            pytest.fail(
-                f"Запрос без поля {missing_field}: сервер не ответил за {REQUEST_TIMEOUT} с, "
-                "ожидался код 400 «Недостаточно данных для входа»"
-            )
-
-        assert response.status_code == 400, (
-            f"Запрос без поля {missing_field}: ожидался код 400, получен {response.status_code}"
-        )
+        assert response.status_code == 400
         assert response.json()["message"] == Messages.LOGIN_NOT_ENOUGH_DATA
 
     @allure.title("С пустым значением поля {empty_field}: код 400")

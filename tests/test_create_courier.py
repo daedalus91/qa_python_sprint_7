@@ -37,7 +37,8 @@ class TestCreateCourier:
     @allure.title("Без обязательного поля {missing_field} курьер не создаётся: код 400")
     @pytest.mark.parametrize("missing_field", ["login", "password"])
     def test_create_courier_without_required_field(self, courier_payload, missing_field):
-        payload = {key: value for key, value in courier_payload.items() if key != missing_field}
+        payload = dict(courier_payload)
+        del payload[missing_field]
         response = create_courier(payload)
 
         assert response.status_code == 400
